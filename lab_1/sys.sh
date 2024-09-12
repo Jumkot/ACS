@@ -5,9 +5,8 @@ PURPLE='\033[0;35m'
 L_BLUE='\033[0;36m'
 END='\033[0m'
 
-echo -e "${L_BLUE}\t\t СИСТЕМА${END}\n"
+echo -e "${L_BLUE}\n\t\t СИСТЕМА${END}\n"
 
-echo -e "${L_BLUE}Название и версия ОС:${END}"
 echo -e "${L_BLUE}Название ОС:${END} $(lsb_release -si)"
 echo -e "${L_BLUE}Версия ОС:${END} $(lsb_release -sr)"
 echo -e "${L_BLUE}Версия ядра:${END} $(uname -r)"
@@ -17,9 +16,12 @@ echo -e "\n${PURPLE}\t\tПРОЦЕССОР${END}\n"
 
 echo -e "${PURPLE}Модель:${END} $(grep "model name" /proc/cpuinfo | head -1 | awk -F: '{ print $2 }' | sed 's/^[ \t]*//;s/[ \t][ \t]*/ /g')"
 echo -e "${PURPLE}Частота:${END} $(grep "cpu MHz" /proc/cpuinfo | awk -F: '{ print $2 " MHz" }' | head -n 1 | sed 's/^[ \t]*//')"
-threads=$(($(nproc) / $(grep -m1 "cpu cores" /proc/cpuinfo | awk '{print $4}')))
-echo -e "${PURPLE}Количество ядер:${END} $(nproc)"
-echo -e "${PURPLE}Потоков на ядро:${END} $threads"
+physical_cores=$(grep -m1 "cpu cores" /proc/cpuinfo | awk '{print $4}')
+logical_processors=$(nproc)
+threads_per_core=$(( logical_processors / physical_cores ))
+echo -e "${PURPLE}Количество физических ядер:${END} $physical_cores"
+echo -e "${PURPLE}Количество логических процессоров:${END} $logical_processors"
+echo -e "${PURPLE}Потоков на ядро:${END} $threads_per_core"
 echo -e "${PURPLE}Кэш-память:${END} $(grep "cache size" /proc/cpuinfo | head -1 | awk -F: '{ print $2 / 1024 " MB" }')"
 
 echo -e "\n${L_BLUE}\t    ОПЕРАТИВНАЯ ПАМЯТЬ${END}\n"
