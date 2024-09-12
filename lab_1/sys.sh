@@ -26,10 +26,10 @@ echo -e "${L_BLUE}Общий размер памяти:${END} $(free -h | head -
 echo -e "${L_BLUE}Использовано:${END} $(free -h | head -n2 | tail -n1 | awk '{print $3 * 1024 " MB"}')"
 echo -e "${L_BLUE}Доступно:${END} $(free -h | head -n2 | tail -n1 | awk '{print $7 * 1024 " MB"}')"
 
-echo -e "\n${PURPLE}\t    СЕТЕВЫЕ ИНТЕРФЕЙСЫ${END}\n"
+echo -e "\n${PURPLE}\t    СЕТЕВЫЕ ИНТЕРФЕЙСЫ${END}"
 
 for interface in $(ls /sys/class/net/ | grep -v lo); do
-  echo -e "${PURPLE}Интерфейс:${END} $interface"
+  echo -e "\n${PURPLE}Интерфейс:${END} $interface"
   ip addr show $interface | grep -E "inet\b" | awk '{print "IP адрес: " $2}'
   cat /sys/class/net/$interface/address | awk '{print "MAC адрес: " $1}'
   speed=$(ethtool $interface 2>/dev/null | grep "Speed:" | awk '{print $2}')
