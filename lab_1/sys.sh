@@ -46,5 +46,5 @@ done
 
 echo -e "\n${L_BLUE}\t     СИСТЕМНЫЕ РАЗДЕЛЫ${END}\n"
 
-df -h --output=source,target,size,used,avail | grep '^/dev/'
+df -h
 
