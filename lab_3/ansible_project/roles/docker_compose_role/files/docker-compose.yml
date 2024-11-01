@@ -1,0 +1,18 @@
+services:
+  doc1:
+    image: my_docs
+    container_name: doc1
+    build:
+      context: .
+    ports:
+      - "2221:22"
+    restart: unless-stopped
+
+  doc2:
+    image: my_docs
+    container_name: doc2
+    build:
+      context: .
+    ports:
+      - "2222:22"
+    restart: unless-stopped

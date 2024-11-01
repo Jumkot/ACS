@@ -9,6 +9,7 @@
     sudo usermod -aG docker $USER
     sudo apt install sshpass -y
     sudo apt install openssh-server -y
+    sudo apt-get install python3 python3-pip python3-dev python3-setuptools -y
 1. Создаём Dockerfile с установкой всех необходимых пакетов и доступом по ssh
 2. Создаём образ
     docker build -t my_docs .
@@ -22,29 +23,37 @@
     mkdir -p ansible_project/{inventory,playbooks,roles}
     cd ansible_project
 6. Создаём ansible.cfg в yaml (ansible_project/ansible.cfg)
-    [defaults]
-    inventory = ./inventory/hosts.yml
-    roles_path = ./roles
-    host_key_checking = False
-
-    [privilege_escalation]
-    become = true
-    become_method = sudo
-8. Формируем inventory и параметры подключения к системам (ansi.../inventory/hosts.yml)
-9. Проверяем подключение (варианты)
+7. Формируем inventory и параметры подключения к системам (ansi.../inventory/hosts.yml)
+8. Проверяем подключение (варианты)
     ssh -p 2221 root@localhost
     ssh -p 2222 root@localhost
     ansible -m ping all
     ansible -m ping doc1
     ansible -m ping doc2
-10. Пример выполнения команды shell
+9. Пример выполнения команды shell
     ansible -m shell -a 'date' doc1 -i inventory/hosts.yml
     ansible -m shell -a 'df -h' doc1 -i inventory/hosts.yml
-11. 
+10. Подготавливаем всё для playbook
     mkdir -p ansible_project/playbooks/templates
     >ansible_project/playbooks/templates/sys.j2
-12. Пишем jinja2-файл sys.j2 по скрипту из первой лабы
-13. Создаём и пишем sys.yml, который будет запускать sys.j2  на докерах и переносить
+11. Пишем jinja2-файл sys.j2 по скрипту из первой лабы
+12. Создаём и пишем sys.yml, который будет запускать sys.j2  на докерах и переносить
     результаты на машину
     >ansible_project/playbooks/sys.yml
-14. 
+13. Запускаем наш playbook и проверяем директорию jsons/
+    ansible-playbook -i inventory/hosts.yml playbooks/sys.yml
+14. Создаём роль
+    cd ansible_project/
+    ansible-galaxy role init docker_compose_role
+15. Пишем docker_compose_role/tasks/main.yml
+16. Пишем docker_compose_role/files/docker_compose.yml
+17. Переносим Dockerfile в docker_compose_role/files/
+18. Добавляем playbooks/docs.yml для запуска роли
+19. Устанавливаем docker-compose
+    sudo apt update
+    sudo apt install docker-compose
+    ansible-galaxy collection install community.docker
+20. Тормозим и удаляем докеры, пробуем роль
+    docker stop doc1 doc2
+    docker rm doc1 doc2
+    ansible-playbook -i inventory/hosts.yml playbooks/docs.yml

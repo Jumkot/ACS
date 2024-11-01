@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 RUN apt-get update && \
-    apt-get install -y openssh-server sudo && \
+    apt-get install -y openssh-server sudo python3 python3-pip && \
     echo 'root:password' | chpasswd && \
     service ssh start
 

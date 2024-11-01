@@ -2,7 +2,7 @@
   "System information": {
     "OS name": "Ubuntu",
     "OS version": "24.04",
-    "Kernel version": "6.8.0-47-generic",
+    "Kernel version": "6.8.0-48-generic",
     "Architecture": "x86_64"
   },
   "Processor": {
@@ -17,8 +17,8 @@
   "Network interfaces": "Not Available",
   "Partitions": {
     "Total Size": "186655 MB",
-    "Available Size": "159574 MB",
-    "Used Size": "27081 MB"
+    "Available Size": "157566 MB",
+    "Used Size": "29089 MB"
   }
 }
 

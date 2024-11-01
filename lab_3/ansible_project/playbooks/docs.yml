@@ -1,0 +1,6 @@
+---
+- name: Start docker_compose_role
+  hosts: localhost
+  become: true
+  roles:
+    - docker_compose_role

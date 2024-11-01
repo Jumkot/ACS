@@ -1,0 +1,31 @@
+---
+# tasks file for docker_compose_role
+
+- name: Build Docker image
+  community.docker.docker_image:
+    name: my_docs
+    source: build
+    build:
+      path: "/home/jumkot/ACS/lab_3/ansible_project/roles/docker_compose_role/files"
+      dockerfile: "Dockerfile"
+      pull: yes
+    state: present
+
+- name: Copy docker-compose file to target location
+  ansible.builtin.copy:
+    src: docker-compose.yml
+    dest: "/home/jumkot/ACS/lab_3/ansible_project/roles/docker_compose_role/files/docker-compose.yml"
+    mode: '0644'
+
+- name: Run docker-compose
+  community.docker.docker_compose_v2:
+    project_src: "/home/jumkot/ACS/lab_3/ansible_project/roles/docker_compose_role/files/"
+    state: present
+  
+- name: Add doc1 key to known_hosts
+  ansible.builtin.shell: "ssh-keyscan -p 2221 localhost >> /home/jumkot/.ssh/known_hosts"
+  ignore_errors: yes
+
+- name: Add doc2 key to known_hosts
+  ansible.builtin.shell: "ssh-keyscan -p 2222 localhost >> /home/jumkot/.ssh/known_hosts"
+  ignore_errors: yes

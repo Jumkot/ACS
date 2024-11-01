@@ -1,18 +1,18 @@
 {
   "System information": {
-    "OS name": "{{ ansible_distribution}}",
-    "OS version": "{{ ansible_distribution_version}}",
-    "Kernel version": "{{ ansible_kernel}}",
-    "Architecture": "{{ ansible_architecture}}"
+    "OS name": "{{ ansible_distribution }}",
+    "OS version": "{{ ansible_distribution_version }}",
+    "Kernel version": "{{ ansible_kernel }}",
+    "Architecture": "{{ ansible_architecture }}"
   },
   "Processor": {
-    "Model": "{{ ansible_processor[0]}}",
-    "Frequency": "{{ ansible_processor_cores}}",
-    "Physical cores": "{{ ansible_processor_cores}}",
-    "Logical processors": "{{ ansible_processor_vcpus}}"
+    "Model": "{{ ansible_processor[0] }}",
+    "Frequency": "{{ ansible_processor_cores }}",
+    "Physical cores": "{{ ansible_processor_cores }}",
+    "Logical processors": "{{ ansible_processor_vcpus }}"
   },
   "Memory": {
-    "Total": "{{ ansible_memory_mb.real.total}} MB"
+    "Total": "{{ ansible_memory_mb.real.total }} MB"
   },
   "Network interfaces": "{{ ansible_interfaces | default('Not Available') }}",
   "Partitions": {
