@@ -1,0 +1,50 @@
+0. Проверяем готовность системы
+    sudo apt update && sudo apt upgrade -y
+    sudo apt remove containerd containerd.io docker docker.io -y
+    sudo apt-get install apt-transport-https ca-certificates curl software-properties-common -y
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    sudo apt update
+    sudo apt install docker-ce -y
+    sudo usermod -aG docker $USER
+    sudo apt install sshpass -y
+    sudo apt install openssh-server -y
+1. Создаём Dockerfile с установкой всех необходимых пакетов и доступом по ssh
+2. Создаём образ
+    docker build -t my_docs .
+3. Запускаем контейнеры с пробросом портов
+    docker run -d -p 2221:22 --name doc1 my_docs
+    docker run -d -p 2222:22 --name doc2 my_docs
+4. Устанавливаем ansible на машину
+    sudo apt update
+    sudo apt install -y ansible
+5. Создаём структуру каталогов ansible
+    mkdir -p ansible_project/{inventory,playbooks,roles}
+    cd ansible_project
+6. Создаём ansible.cfg в yaml (ansible_project/ansible.cfg)
+    [defaults]
+    inventory = ./inventory/hosts.yml
+    roles_path = ./roles
+    host_key_checking = False
+
+    [privilege_escalation]
+    become = true
+    become_method = sudo
+8. Формируем inventory и параметры подключения к системам (ansi.../inventory/hosts.yml)
+9. Проверяем подключение (варианты)
+    ssh -p 2221 root@localhost
+    ssh -p 2222 root@localhost
+    ansible -m ping all
+    ansible -m ping doc1
+    ansible -m ping doc2
+10. Пример выполнения команды shell
+    ansible -m shell -a 'date' doc1 -i inventory/hosts.yml
+    ansible -m shell -a 'df -h' doc1 -i inventory/hosts.yml
+11. 
+    mkdir -p ansible_project/playbooks/templates
+    >ansible_project/playbooks/templates/sys.j2
+12. Пишем jinja2-файл sys.j2 по скрипту из первой лабы
+13. Создаём и пишем sys.yml, который будет запускать sys.j2  на докерах и переносить
+    результаты на машину
+    >ansible_project/playbooks/sys.yml
+14. 

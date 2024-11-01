@@ -1,0 +1,20 @@
+---
+- name: System information
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Create system information JSON file on remote host
+      ansible.builtin.template:
+        src: templates/sys.j2
+        dest: "/tmp/sys_{{ inventory_hostname }}.json"
+
+    - name: Fetch system information JSON file to local machine
+      ansible.builtin.fetch:
+        src: "/tmp/sys_{{ inventory_hostname }}.json"
+        dest: "~/ACS/lab_3/jsons/"
+        flat: yes
+
+    - name: Remove the temporary JSON file on remote host
+      ansible.builtin.file:
+        path: "/tmp/sys_{{ inventory_hostname }}.json"
+        state: absent
