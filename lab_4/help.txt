@@ -1,0 +1,7 @@
+1. docker-compose up -d
+2.
+2.1. nginx: curl http://localhost:8080
+for i in $(seq 1 200);do curl -sSL -q http://localhost:8080;done | grep -E 'You see back[12]' | sort | uniq -c
+2.3. traefik: curl http://localhost
+for i in $(seq 1 200);do curl -sSL -q http://localhost;done | grep -E 'You see back[12]' | sort | uniq -c
+3. docker-compose down

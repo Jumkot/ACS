@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    ports:
+      - "8080:8080"
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+    networks:
+      - backs-net
+
+  back1:
+    image: nginx:alpine
+    container_name: back1
+    volumes:
+      - ./back1/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Path(`/`)"
+      - "traefik.http.services.backend.loadbalancer.server.port=80"
+    networks:
+      - backs-net
+
+  back2:
+    image: nginx:alpine
+    container_name: back2
+    volumes:
+      - ./back2/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Path(`/`)"
+      - "traefik.http.services.backend.loadbalancer.server.port=80"
+    networks:
+      - backs-net
+
+networks:
+  backs-net:
+    driver: bridge
+    name: backs-net
