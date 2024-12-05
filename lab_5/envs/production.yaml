@@ -1,0 +1,4 @@
+domain: "production-nginx.local"
+replicas: 4
+labels:
+  app: nginx-production

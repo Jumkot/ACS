@@ -1,0 +1,2 @@
+domain: "staging-nginx.local"
+replicas: 2

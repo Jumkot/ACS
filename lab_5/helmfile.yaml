@@ -1,0 +1,22 @@
+environments:
+  staging:
+    values:
+      - ./envs/staging.yaml
+  production:
+    values:
+      - ./envs/production.yaml
+
+releases:
+  - name: nginx-staging
+    namespace: default
+    chart: ./nginx-chart
+    values:
+      - ./values/staging-values.yaml
+      - ./envs/staging.yaml  # Файл для staging environment
+
+  - name: nginx-production
+    namespace: default
+    chart: ./nginx-chart
+    values:
+      - ./values/production-values.yaml
+      - ./envs/production.yaml  # Файл для production environment
