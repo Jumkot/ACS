@@ -1,0 +1,8 @@
+replicaCount: "{{ .Values.replicas }}"
+ingress:
+    enabled: true
+    hosts:
+    - host: "{{ .Values.domain }}"
+      paths:
+        - path: /
+          pathType: Prefix

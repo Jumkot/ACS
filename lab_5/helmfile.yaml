@@ -1,22 +1,14 @@
 environments:
-  staging:
+  {{ .Environment.Name }}:
     values:
-      - ./envs/staging.yaml
-  production:
-    values:
-      - ./envs/production.yaml
+      - ./envs/{{ .Environment.Name }}/env.yaml
 
+---
 releases:
-  - name: nginx-staging
+  - name: nginx-{{ .Environment.Name }}
     namespace: default
     chart: ./nginx-chart
+    labels:
+      app: nginx-{{ .Environment.Name }}
     values:
-      - ./values/staging-values.yaml
-      - ./envs/staging.yaml  # Файл для staging environment
-
-  - name: nginx-production
-    namespace: default
-    chart: ./nginx-chart
-    values:
-      - ./values/production-values.yaml
-      - ./envs/production.yaml  # Файл для production environment
+      - ./values/values.yaml.gotmpl
